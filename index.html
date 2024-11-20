@@ -4,46 +4,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toc</title>
-    <link rel="stylesheet" href="tic.css">
+    <title>Tic Tac Toe</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favi.png">
+    <style>
+        .grid-cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #f3f4f6;
+            border: 2px solid #e5e7eb;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            background-size: 70%;
+            /* Adjust size */
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .grid-cell.x {
+            background-image: url('x.png');
+            /* Replace with the correct path */
+        }
+
+        .grid-cell.o {
+            background-image: url('o.png');
+            /* Replace with the correct path */
+        }
+    </style>
 </head>
 
-<body>
-    <div id="btn" >
-        <button id="playComputer" class="butn">Play against computer</button>
-        <button id="playfriend" class="butn">Play against friend</button>
-    </div>
-    <div class="centeer"  style="display:none;">
-        <h1 id="h1"></h1>
-        <div class="main">
-            <div class="tic0" onclick="player(0,0)"></div>
-            <div class="tic1" onclick="player(0,1)"></div>
-            <div class="tic2" onclick="player(0,2)"></div>
-            <div class="tic3" onclick="player(1,0)"></div>
-            <div class="tic4" onclick="player(1,1)"></div>
-            <div class="tic5" onclick="player(1,2)"></div>
-            <div class="tic6" onclick="player(2,0)"></div>
-            <div class="tic7" onclick="player(2,1)"></div>
-            <div class="tic8" onclick="player(2,2)"></div>
-
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="text-center space-y-4">
+        <!-- Game Selection -->
+        <div id="btn" class="space-y-4">
+            <button id="playComputer" class="butn bg-blue-500 text-white py-2 px-4 rounded shadow-md hover:bg-blue-600">
+                Play against Computer
+            </button>
+            <button id="playfriend" class="butn bg-green-500 text-white py-2 px-4 rounded shadow-md hover:bg-green-600">
+                Play against Friend
+            </button>
         </div>
-        <button id="restart" style="display:none;" >Restart Game</button>
+
+        <!-- Game Board -->
+        <div class="centeer hidden">
+            <h1 id="h1" class="text-2xl font-bold mb-4 text-gray-700"></h1>
+            <div class="main grid grid-cols-3 gap-2 mx-auto w-max">
+                <div class="grid-cell tic0" onclick="player(0,0)"></div>
+                <div class="grid-cell tic1" onclick="player(0,1)"></div>
+                <div class="grid-cell tic2" onclick="player(0,2)"></div>
+                <div class="grid-cell tic3" onclick="player(1,0)"></div>
+                <div class="grid-cell tic4" onclick="player(1,1)"></div>
+                <div class="grid-cell tic5" onclick="player(1,2)"></div>
+                <div class="grid-cell tic6" onclick="player(2,0)"></div>
+                <div class="grid-cell tic7" onclick="player(2,1)"></div>
+                <div class="grid-cell tic8" onclick="player(2,2)"></div>
+            </div>
+            <button id="restart" class="hidden mt-4 bg-red-500 text-white py-2 px-4 rounded shadow-md hover:bg-red-600">
+                Restart Game
+            </button>
+        </div>
     </div>
     <script>
-        var playPc; 
-         document.getElementById("playComputer").addEventListener("click", function() {  
+        var playPc;
+        document.getElementById("playComputer").addEventListener("click", function () {
             console.log("hello");
             playPc = true;
             document.querySelector(".centeer").style.display = "block";
             document.getElementById("btn").style.display = "none";
-      });
-         document.getElementById("playfriend").addEventListener("click", function() {  
+        });
+        document.getElementById("playfriend").addEventListener("click", function () {
             console.log("hello");
-              playPc = false;
+            playPc = false;
             document.querySelector(".centeer").style.display = "block";
             document.getElementById("btn").style.display = "none";
-      });
+        });
         const image = ["url('x.png')", "url('o.png')"];
         var count = 0;
         var stopGame = true;
@@ -74,7 +113,7 @@
 
         let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
-        function solve(board, c,  options, curr) {
+        function solve(board, c, options, curr) {
             if (c === 8) {
                 return winner(board);
             }
@@ -91,7 +130,7 @@
                     if (board[i][j] === 0) {
                         if (c % 2 === 1) {
                             board[i][j] = 1;
-                            const result = solve(board, c + 1,  options, curr);
+                            const result = solve(board, c + 1, options, curr);
                             if (curr === c && result >= 0) {
                                 options.push([i, j, result]);
                             }
@@ -144,8 +183,8 @@
 
         function player(i, j) {
             let k = playerTap(i, j);
-            if(playPc){
-                
+            if (playPc) {
+
                 var delayInMilliseconds = 200; //1 second
                 if (k) {
                     setTimeout(
@@ -195,44 +234,44 @@
                     if (board[0][j] == board[1][j] && board[0][j] == board[2][j] && board[0][j] != 0) {
                         tap[0][j].style.backgroundColor = tap[1][j].style.backgroundColor = tap[2][j].style.backgroundColor = "#00ff00";
                         GameOver();
-                       
+
                         console.log("first");
                     }
                     if (board[j][0] == board[j][1] && board[j][0] == board[j][2] && board[j][0] != 0) {
                         tap[j][0].style.backgroundColor = tap[j][1].style.backgroundColor = tap[j][2].style.backgroundColor = "#00ff00";
                         GameOver();
-                       
+
                         console.log("second");
                     }
-                    
+
                 }
-                
+
                 // Cross Checking
                 if (board[1][1] == board[0][0] && board[1][1] == board[2][2] && board[0][0] != 0) {
                     tap[0][0].style.backgroundColor = tap[1][1].style.backgroundColor = tap[2][2].style.backgroundColor = "#00ff00";
                     GameOver();
-                   
+
                 }
                 if (board[0][2] == board[1][1] && board[2][0] == board[1][1] && board[0][2] != 0) {
                     tap[0][2].style.backgroundColor = tap[1][1].style.backgroundColor = tap[2][0].style.backgroundColor = "#00ff00";
-                    
+
                     GameOver();
-                    
+
                 }
                 if (count === 9 && winner(board) === 0) {  // No winner, but all cells are filled
-            GameOver();  // End the game
-            document.getElementById("restart").style.display = "block";  // Show restart button
-            console.log("It's a draw!");
-            document.getElementById("h1").innerHTML = "It's a draw!";
-        }
+                    GameOver();  // End the game
+                    document.getElementById("restart").style.display = "block";  // Show restart button
+                    console.log("It's a draw!");
+                    document.getElementById("h1").innerHTML = "It's a draw!";
+                }
             }
         }
         function GameOver() {
             stopGame = false;
-            if(count%2 != 0){
+            if (count % 2 != 0) {
                 document.getElementById("h1").innerHTML = "X Won!";
-            }else{
-                
+            } else {
+
                 document.getElementById("h1").innerHTML = "O Won!";
             }
             document.getElementById("restart").style.display = "block";
@@ -255,9 +294,9 @@
             }
             document.getElementById("restart").style.display = "none";
         });
-        
-    
-        
+
+
+
     </script>
 </body>
 
